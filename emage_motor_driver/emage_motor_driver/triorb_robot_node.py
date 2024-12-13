@@ -10,8 +10,6 @@ from triorb_core import TriOrbDrive3Pose
 import time
 import os
 
-
-
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s")
 
@@ -55,11 +53,12 @@ class TriOrbRobotNode(Node):
 
     def cmd_vel_callback(self, msg):
         """Callback for /cmd_vel to set robot velocity."""
-        self.vel_x = msg.linear.x
-        self.vel_y = msg.linear.y
+        # Convert ROS frame velocities to robot frame velocities
+        self.vel_x = msg.linear.y
+        self.vel_y = msg.linear.x
         self.omega = msg.angular.z
 
-        self.get_logger().info(f"Publishing cmd_vel to robot: x:{self.x}, y:{self.y}, w:{self.omega}")
+        self.get_logger().info(f"Publishing cmd_vel to robot: x:{self.vel_x}, y:{self.vel_y}, w:{self.omega}")
         try:
             self.robot.set_vel_absolute(self.vel_x, self.vel_y, self.omega, acc=500, dec=500)
         except Exception as e:
@@ -70,14 +69,14 @@ class TriOrbRobotNode(Node):
 
         current_time = self.get_clock().now()
         self.get_logger().info(f"Publishing odom at time : {current_time}")
-        # dt = (current_time - self.last_time).nanoseconds / 1e9
 
-        # # Update robot's position based on velocity
-        # self.x += self.vel_x * dt
-        # self.y += self.vel_y * dt
-        # self.theta += self.omega * dt
+        # Get robot pose in its local frame
+        robot_pose: TriOrbDrive3Pose = self.robot.get_pos()[0]
 
-        robot_pose :TriOrbDrive3Pose = self.robot.get_pos()[0]
+        # Convert robot frame coordinates to ROS frame
+        ros_x = robot_pose.y  # Robot's +y becomes ROS's +x
+        ros_y = robot_pose.x  # Robot's +x becomes ROS's +y
+        ros_theta = robot_pose.w
 
         # Create odometry message
         odom = Odometry()
@@ -85,10 +84,10 @@ class TriOrbRobotNode(Node):
         odom.header.frame_id = "odom"
 
         # Pose
-        odom.pose.pose.position.x = robot_pose.x
-        odom.pose.pose.position.y = robot_pose.y
+        odom.pose.pose.position.x = ros_x
+        odom.pose.pose.position.y = ros_y
         odom.pose.pose.position.z = 0.0
-        quaternion = quaternion_from_euler(0, 0, robot_pose.w)
+        quaternion = quaternion_from_euler(0, 0, ros_theta)
         odom.pose.pose.orientation.x = quaternion[0]
         odom.pose.pose.orientation.y = quaternion[1]
         odom.pose.pose.orientation.z = quaternion[2]
@@ -96,8 +95,8 @@ class TriOrbRobotNode(Node):
 
         # Velocity
         odom.child_frame_id = "base_link"
-        odom.twist.twist.linear.x = self.vel_x
-        odom.twist.twist.linear.y = self.vel_y
+        odom.twist.twist.linear.x = self.vel_y  # Robot's +x velocity becomes ROS's +y
+        odom.twist.twist.linear.y = self.vel_x  # Robot's +y velocity becomes ROS's +x
         odom.twist.twist.angular.z = self.omega
 
         # Publish odometry
@@ -108,8 +107,8 @@ class TriOrbRobotNode(Node):
         transform.header.stamp = current_time.to_msg()
         transform.header.frame_id = "odom"
         transform.child_frame_id = "base_link"
-        transform.transform.translation.x = robot_pose.x
-        transform.transform.translation.y = robot_pose.y
+        transform.transform.translation.x = ros_x
+        transform.transform.translation.y = ros_y
         transform.transform.translation.z = 0.0
         transform.transform.rotation.x = quaternion[0]
         transform.transform.rotation.y = quaternion[1]
