@@ -31,6 +31,23 @@ class TriOrbRobotNode(Node):
         try:
             self.robot = TriOrbRobot(robot_port)
             self.get_logger().info("Robot initialized successfully!")
+            self.get_logger().info(f"Robot Info: {self.robot.get_info()}")
+
+
+            self.robot.write_config({  # Write new configuration
+                "acc" : 1500,  # Set standard acceleration/deceleration time to 1.5[s]
+                "std-vel" : 0.25,  # Set standard translation speed to 0.25[m/s]
+                "std-rot" : 0.5,  # Set standard rotation speed to 0.5[rad/s]
+                "torque" : 500,   # Set torque limit to 50[%]
+            }) 
+            self.get_logger().info(f"Robot Config : {self.robot.read_config()}")  # Read current configuration
+            
+            # Resetting Odometry origin to 0
+            self.robot.reset_origin()
+
+            # Exciting the motors
+            self.robot.wakeup()
+            time.sleep(2)
         except Exception as e:
             self.get_logger().error(f"Failed to initialize the robot: {e}")
             self.shutdown_node("Robot initialization failed.")  # Shutdown node gracefully
@@ -68,7 +85,6 @@ class TriOrbRobotNode(Node):
         """Publishes odometry information."""
 
         current_time = self.get_clock().now()
-        self.get_logger().info(f"Publishing odom at time : {current_time}")
 
         # Get robot pose in its local frame
         robot_pose: TriOrbDrive3Pose = self.robot.get_pos()[0]
@@ -100,6 +116,8 @@ class TriOrbRobotNode(Node):
         odom.twist.twist.angular.z = self.omega
 
         # Publish odometry
+
+        self.get_logger().info(f"Publishing odom at time : {current_time.nanoseconds}, Position X:{odom.pose.pose.position.x},Y:{odom.pose.pose.position.y}, Omega:{ros_theta}")
         self.odom_pub.publish(odom)
 
         # Broadcast transform
