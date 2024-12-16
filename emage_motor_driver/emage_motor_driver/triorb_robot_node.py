@@ -72,7 +72,7 @@ class TriOrbRobotNode(Node):
         """Callback for /cmd_vel to set robot velocity."""
         # Convert ROS frame velocities to robot frame velocities
         self.vel_x = msg.linear.y
-        self.vel_y = msg.linear.x
+        self.vel_y = -msg.linear.x
         self.omega = msg.angular.z
 
         self.get_logger().info(f"Publishing cmd_vel to robot: x:{self.vel_x}, y:{self.vel_y}, w:{self.omega}")

@@ -6,3 +6,7 @@ This repository contains development work for TriOrb robot Vison based navigatio
 
 Auto Build (useful in package testing)-
 colcon build --symlink-install
+
+### Utilities - 
+Install - sudo apt install ros-humble-teleop-twist-keyboard
+Run - ros2 run teleop_twist_keyboard teleop_twist_keyboard
