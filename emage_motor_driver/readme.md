@@ -11,6 +11,7 @@ Note - It Uses TriOrb / ROS2-msg-Types package to use structured msg and service
 #### Motor Lib
 sudo python3 -m pip install git+https://github.com/TriOrb-Inc/triorb-core.git
 #### Package deps
+sudo apt-get install ros-humble-tf-transformations
 rosdep install --from-paths src --ignore-src -r -y
 
 ### Make execuatable
