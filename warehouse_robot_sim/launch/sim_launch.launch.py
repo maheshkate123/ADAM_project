@@ -30,14 +30,14 @@ import xacro
 
 def generate_launch_description():
 
-       #aws_small_warehouse
+      
     world = os.path.join(get_package_share_directory(
         'warehouse_robot_sim'), 'worlds', 'warehouse.world')
     
  
     spawn_x_val = '0.0'
     spawn_y_val = '0.0'
-    spawn_z_val = '0.0'
+    spawn_z_val = '0.025'
     spawn_yaw_val = '0.0'
     
 
@@ -73,13 +73,6 @@ def generate_launch_description():
                                     '-z', spawn_z_val,
                                     '-Y', spawn_yaw_val],
                         output='screen')
-
-  
-
-
-
-
-   
 
 
     rviz2= ExecuteProcess(cmd=['rviz2'],

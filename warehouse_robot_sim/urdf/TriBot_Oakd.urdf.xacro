@@ -1,5 +1,13 @@
 <?xml version="1.0" ?>
-<robot name="TriOrb300P100">
+<robot name="TriOrb300P100" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find warehouse_robot_sim)/urdf/oakd.urdf.xacro"/>
+  <xacro:include filename="$(find warehouse_robot_sim)/urdf/omni_controller.urdf.xacro" />
+
+<link name="base_footprint">
+
+ 
+</link>
   <link name="base_link">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -9,7 +17,7 @@
     <visual name="TriOrb300P100_UnderPlate_visual">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-            <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_UnderPlate.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_UnderPlate.stl" scale="0.001 0.001 0.001" />
         </geometry>
         <material name="sus">
             <color rgba="0.753 0.753 0.753 1.0"/>
@@ -18,132 +26,17 @@
     <collision name="TriOrb300P100_UnderPlate_collision">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-            <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_UnderPlate.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_UnderPlate.stl" scale="0.001 0.001 0.001" />
         </geometry>
     </collision>
   </link>
   
-     <!-- Wheel 1 Definition -->
-   <link name="wheel1">
-       <inertial>
-           <mass value="1.0"/> <!-- Adjust mass as needed -->
-           <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
-       </inertial>
-       <visual>
-           <origin xyz="0 0 0" rpy="0 0 0"/>
-           <geometry>
-               <cylinder radius="0.1" length="0.05"/> <!-- Define as a cylinder for a wheel -->
-           </geometry>
-           <material name="black">
-               <color rgba="0.0 0.0 0.0 1.0"/>
-           </material>
-       </visual>
-       <collision>
-           <origin xyz="0 0 0" rpy="0 0 0"/>
-           <geometry>
-               <cylinder radius="0.1" length="0.05"/>
-           </geometry>
-       </collision>
-   </link>
-   
-   <!-- Wheel 2 Definition -->
-   <link name="wheel2">
-       <inertial>
-           <mass value="1.0"/> <!-- Adjust mass as needed -->
-           <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
-       </inertial>
-       <visual>
-           <origin xyz="0 0 0" rpy="0 0 0"/>
-           <geometry>
-               <cylinder radius="0.1" length="0.05"/>
-           </geometry>
-           <material name="black">
-               <color rgba="0.0 0.0 0.0 1.0"/>
-           </material>
-       </visual>
-       <collision>
-           <origin xyz="0 0 0" rpy="0 0 0"/>
-           <geometry>
-               <cylinder radius="0.1" length="0.05"/>
-           </geometry>
-       </collision>
-   </link>
-   
-   <!-- Wheel 3 Definition -->
-   <link name="wheel3">
-       <inertial>
-           <mass value="1.0"/> <!-- Adjust mass as needed -->
-           <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
-       </inertial>
-       <visual>
-           <origin xyz="0 0 0" rpy="0 0 0"/>
-           <geometry>
-               <cylinder radius="0.1" length="0.05"/>
-           </geometry>
-           <material name="black">
-               <color rgba="0.0 0.0 0.0 1.0"/>
-           </material>
-       </visual>
-       <collision>
-           <origin xyz="0 0 0" rpy="0 0 0"/>
-           <geometry>
-               <cylinder radius="0.1" length="0.05"/>
-           </geometry>
-       </collision>
-   </link>
-   
-   <!-- Joint Definitions for Wheels -->
-   <!-- Joint 1 -->
-   <joint name="wheel1_joint" type="revolute">
-       <parent link="base_link"/> <!-- Connecting to the base link -->
-       <child link="wheel1"/>
-       <origin xyz="0.5 0.5 0.0" rpy="0 0 0"/> <!-- Adjust position to where the wheel should connect on the base -->
-       <axis xyz="0 0 1"/> <!-- Assuming rotation around Z-axis -->
-       <limit lower="-1.57" upper="1.57" effort="10.0" velocity="5.0"/>
-   </joint>
-   
-   <!-- Joint 2 -->
-   <joint name="wheel2_joint" type="revolute">
-       <parent link="base_link"/>
-       <child link="wheel2"/>
-       <origin xyz="0.5 -0.5 0.0" rpy="0 0 0"/> <!-- Adjust position accordingly -->
-       <axis xyz="0 0 1"/>
-       <limit lower="-1.57" upper="1.57" effort="10.0" velocity="5.0"/>
-   </joint>
-   
-   <!-- Joint 3 -->
-   <joint name="wheel3_joint" type="revolute">
-       <parent link="base_link"/>
-       <child link="wheel3"/>
-       <origin xyz="-0.5 0.0 0.0" rpy="0 0 0"/> <!-- Adjust position accordingly -->
-       <axis xyz="0 0 1"/>
-       <limit lower="-1.57" upper="1.57" effort="10.0" velocity="5.0"/>
-   </joint>
-  
-  <gazebo>
-    <plugin name="omni_drive_plugin" filename="libgazebo_ros_skid_steer_drive.so">
-      <ros>
-        <namespace>/robot</namespace>
-        <remapping>cmd_vel:=/cmd_vel</remapping>
-        <remapping>odom:=/odom</remapping>
-      </ros>
-      <updateRate>50.0</updateRate>
-      
-      <!-- Joint names for omni-drive wheels -->
-      <leftJoint>wheel1_joint</leftJoint>
-      <leftJoint>wheel2_joint</leftJoint>
-      <leftJoint>wheel3_joint</leftJoint>
-      
-      <!-- Physical parameters -->
-      <wheelSeparation>0.5</wheelSeparation>
-      <wheelRadius>0.1</wheelRadius>
-      <wheelTorque>1.0</wheelTorque>
-      
-      <!-- Odometry -->
-      <odometryFrame>odom</odometryFrame>
-      <robotBaseFrame>base_link</robotBaseFrame>
-    </plugin>
-  </gazebo>
+<joint name="base_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.15" rpy="0.0 0.0 1.57"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+ </joint>
+
   
   <link name="TriOrb300P100_TopPlate">
     <inertial>
@@ -154,7 +47,7 @@
     <visual name="TriOrb300P100_TopPlate_visual">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0" />
         <geometry>
-            <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_TopPlate.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_TopPlate.stl" scale="0.001 0.001 0.001" />
         </geometry>
         <material name="dark_gray">
             <color rgba="0.01 0.01 0.01 1.0"/>
@@ -163,7 +56,7 @@
     <collision name="TriOrb300P100_TopPlate_collision">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0" />
         <geometry>
-            <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_TopPlate.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_TopPlate.stl" scale="0.001 0.001 0.001" />
         </geometry>
     </collision>
   </link>
@@ -269,7 +162,7 @@
     <visual name="TriOrb300P100_PlateA_PlateA-1_visual">
         <origin xyz="0.0 -0.131 0.064" rpy="1.5708 0.0 0.0" />
         <geometry>
-            <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
         </geometry>
         <material name="aluminum">
             <color rgba="0.5 0.5490196078431373 0.5333333333333333 1.0"/>
@@ -278,7 +171,7 @@
     <collision name="TriOrb300P100_PlateA_PlateA-1_collision">
         <origin xyz="0.0 -0.131 0.064" rpy="1.5708 0.0 0.0" />
         <geometry>
-            <mesh filename="../meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
         </geometry>
     </collision>
   </link>
@@ -297,7 +190,7 @@
     <visual name="TriOrb300P100_PlateA_PlateA-2_visual">
         <origin xyz="0.115 0.067 0.064" rpy="1.5708 0.0 2.0944" />
         <geometry>
-            <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
         </geometry>
         <material name="aluminum">
             <color rgba="0.5 0.5490196078431373 0.5333333333333333 1.0"/>
@@ -306,7 +199,7 @@
     <collision name="TriOrb300P100_PlateA_PlateA-2_collision">
         <origin xyz="0.115 0.067 0.064" rpy="1.5708 0.0 2.0944" />
         <geometry>
-            <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
         </geometry>
     </collision>
   </link>
@@ -319,7 +212,7 @@
     <visual name="TriOrb300P100_PlateA_PlateA-3_visual">
         <origin xyz="-0.115 0.067 0.064" rpy="1.5708 0.0 -2.0944" />
         <geometry>
-            <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
         </geometry>
         <material name="aluminum">
             <color rgba="0.5 0.5490196078431373 0.5333333333333333 1.0"/>
@@ -328,7 +221,7 @@
     <collision name="TriOrb300P100_PlateA_PlateA-3_collision">
         <origin xyz="-0.115 0.067 0.064" rpy="1.5708 0.0 -2.0944" />
         <geometry>
-            <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_PlateA-1.stl" scale="0.001 0.001 0.001" />
         </geometry>
     </collision>
   </link>
@@ -354,7 +247,7 @@
         <visual name="TriOrb300P100_Casters_BlockC_BlockC1_visual">
             <origin xyz="0.0 0.226 0.138" rpy="0.0 3.1415 -1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="dark_gray">
                 <color rgba="0.01 0.01 0.01 1.0"/>
@@ -363,7 +256,7 @@
         <collision name="TriOrb300P100_Casters_BlockC_BlockC1_collision">
             <origin xyz="0.0 0.226 0.138" rpy="0.0 3.1415 -1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -376,7 +269,7 @@
         <visual name="TriOrb300P100_Casters_BlockC_BlockC2_visual">
             <origin xyz="-0.196 -0.113 0.138" rpy="0.0 3.1415 0.521" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="dark_gray">
                 <color rgba="0.01 0.01 0.01 1.0"/>
@@ -385,7 +278,7 @@
         <collision name="TriOrb300P100_Casters_BlockC_BlockC2_collision">
             <origin xyz="-0.196 -0.113 0.138" rpy="0.0 3.1415 0.521" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -398,7 +291,7 @@
         <visual name="TriOrb300P100_Casters_BlockC_BlockC3_visual">
             <origin xyz="0.196 -0.113 0.138" rpy="0.0 3.1415 2.6154" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="dark_gray">
                 <color rgba="0.01 0.01 0.01 1.0"/>
@@ -407,7 +300,7 @@
         <collision name="TriOrb300P100_Casters_BlockC_BlockC3_collision">
             <origin xyz="0.196 -0.113 0.138" rpy="0.0 3.1415 2.6154" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_BlockC1.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>  
@@ -439,7 +332,7 @@
         <visual name="TriOrb300P100_Casters_BlockC_Pall1a_visual">
             <origin xyz="-0.057 0.222 0.138" rpy="0 3.1415 2.617901" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="dark_gray">
                 <color rgba="0.01 0.01 0.01 1.0"/>
@@ -448,7 +341,7 @@
         <collision name="TriOrb300P100_Casters_BlockC_Pall1a_collision">
             <origin xyz="-0.057 0.222 0.138" rpy="0 3.1415 2.617901" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -461,7 +354,7 @@
         <visual name="TriOrb300P100_Casters_BlockC_Pall1b_visual">
             <origin xyz="0.057 0.222 0.138" rpy="0 3.1415 0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="dark_gray">
                 <color rgba="0.01 0.01 0.01 1.0"/>
@@ -470,7 +363,7 @@
         <collision name="TriOrb300P100_Casters_BlockC_Pall1b_collision">
             <origin xyz="0.057 0.222 0.138" rpy="0 3.1415 0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -483,7 +376,7 @@
         <visual name="TriOrb300P100_Casters_BlockC_Pall2a_visual">
             <origin xyz="0.221 -0.062 0.138" rpy="0 3.1415 0.521" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="dark_gray">
                 <color rgba="0.01 0.01 0.01 1.0"/>
@@ -492,7 +385,7 @@
         <collision name="TriOrb300P100_Casters_BlockC_Pall2a_collision">
             <origin xyz="0.221 -0.062 0.138" rpy="0 3.1415 0.521" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -505,7 +398,7 @@
         <visual name="TriOrb300P100_Casters_BlockC_Pall2b_visual">
             <origin xyz="0.164 -0.16 0.138" rpy="0 3.1415 -1.5734" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="dark_gray">
                 <color rgba="0.01 0.01 0.01 1.0"/>
@@ -514,7 +407,7 @@
         <collision name="TriOrb300P100_Casters_BlockC_Pall2b_collision">
             <origin xyz="0.164 -0.16 0.138" rpy="0 3.1415 -1.5734" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -527,7 +420,7 @@
         <visual name="TriOrb300P100_Casters_BlockC_Pall3a_visual">
             <origin xyz="-0.221 -0.062 0.138" rpy="0 3.1415 2.6154" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="dark_gray">
                 <color rgba="0.01 0.01 0.01 1.0"/>
@@ -536,7 +429,7 @@
         <collision name="TriOrb300P100_Casters_BlockC_Pall3a_collision">
             <origin xyz="-0.221 -0.062 0.138" rpy="0 3.1415 2.6154" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -549,7 +442,7 @@
         <visual name="TriOrb300P100_Casters_BlockC_Pall3b_visual">
             <origin xyz="-0.164 -0.16 0.138" rpy="0 3.1415 4.9715" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="dark_gray">
                 <color rgba="0.01 0.01 0.01 1.0"/>
@@ -558,7 +451,7 @@
         <collision name="TriOrb300P100_Casters_BlockC_Pall3b_collision">
             <origin xyz="-0.164 -0.16 0.138" rpy="0 3.1415 4.9715" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_Casters_BlockC_Pall.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -608,7 +501,7 @@
         <visual name="TriOrb300P100_PlateA1_BLMR5100K-10-B_GPA28GT5150-A-N18_visual">
             <origin xyz="-0.012 -0.133 0.07" rpy="0.0 0.0 -1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -617,7 +510,7 @@
         <collision name="TriOrb300P100_PlateA1_BLMR5100K-10-B_GPA28GT5150-A-N18_collision">
             <origin xyz="-0.012 -0.133 0.07" rpy="0.0 0.0 -1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -630,7 +523,7 @@
         <visual name="TriOrb300P100_PlateA1_BLMR5100K-10-B_Motor_visual">
             <origin xyz="-0.012 -0.123 0.07" rpy="-1.5708 0.0 -1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="light_gray">
                 <color rgba="0.3 0.3 0.3 1.0"/>
@@ -639,7 +532,7 @@
         <collision name="TriOrb300P100_PlateA1_BLMR5100K-10-B_Motor_collision">
             <origin xyz="-0.012 -0.123 0.07" rpy="-1.5708 0.0 -1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -652,7 +545,7 @@
         <visual name="TriOrb300P100_PlateA2_BLMR5100K-10-B_GPA28GT5150-A-N18_visual">
             <origin xyz="0.123 0.057 0.067" rpy="0.0 0.0 0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -661,7 +554,7 @@
         <collision name="TriOrb300P100_PlateA2_BLMR5100K-10-B_GPA28GT5150-A-N18_collision">
             <origin xyz="0.123 0.057 0.067" rpy="0.0 0.0 0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -674,7 +567,7 @@
         <visual name="TriOrb300P100_PlateA2_BLMR5100K-10-B_Motor_visual">
             <origin xyz="0.115 0.052 0.067" rpy="-1.5708 0.0 0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="light_gray">
                 <color rgba="0.3 0.3 0.3 1.0"/>
@@ -683,7 +576,7 @@
         <collision name="TriOrb300P100_PlateA2_BLMR5100K-10-B_Motor_collision">
             <origin xyz="0.115 0.052 0.067" rpy="-1.5708 0.0 0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -696,7 +589,7 @@
         <visual name="TriOrb300P100_PlateA3_BLMR5100K-10-B_GPA28GT5150-A-N18_visual">
             <origin xyz="-0.111 0.078 0.067" rpy="0.0 0.0 2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -705,7 +598,7 @@
         <collision name="TriOrb300P100_PlateA3_BLMR5100K-10-B_GPA28GT5150-A-N18_collision">
             <origin xyz="-0.111 0.078 0.067" rpy="0.0 0.0 2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_GPA28GT5150-A-N18.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -718,7 +611,7 @@
         <visual name="TriOrb300P100_PlateA3_BLMR5100K-10-B_Motor_visual">
             <origin xyz="-0.103 0.073 0.067" rpy="-1.5708 0.0 2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="light_gray">
                 <color rgba="0.3 0.3 0.3 1.0"/>
@@ -727,7 +620,7 @@
         <collision name="TriOrb300P100_PlateA3_BLMR5100K-10-B_Motor_collision">
             <origin xyz="-0.103 0.073 0.067" rpy="-1.5708 0.0 2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_BLMR5100K-10-B_Motor.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>  
@@ -780,7 +673,7 @@
         <visual name="TriOrb300P100_PlateA1_Belt_visual">
             <origin xyz="0.0 -0.131 0.064" rpy="1.5708 0.0 0.0" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="black">
                 <color rgba="0 0 0 1.0"/>
@@ -789,7 +682,7 @@
         <collision name="TriOrb300P100_PlateA1_Belt_collision">
             <origin xyz="0.0 -0.131 0.064" rpy="1.5708 0.0 0.0" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -802,7 +695,7 @@
         <visual name="TriOrb300P100_PlateA2_Belt_visual">
             <origin xyz="0.115 0.067 0.061" rpy="1.5708 0.0 2.0944" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="black">
                 <color rgba="0 0 0 1.0"/>
@@ -811,7 +704,7 @@
         <collision name="TriOrb300P100_PlateA2_Belt_collision">
             <origin xyz="0.115 0.067 0.061" rpy="1.5708 0.0 2.0944" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -824,7 +717,7 @@
         <visual name="TriOrb300P100_PlateA3_Belt_visual">
             <origin xyz="-0.115 0.067 0.061" rpy="1.5708 0.0 -2.0944" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="black">
                 <color rgba="0 0 0 1.0"/>
@@ -833,7 +726,7 @@
         <collision name="TriOrb300P100_PlateA3_Belt_collision">
             <origin xyz="-0.115 0.067 0.061" rpy="1.5708 0.0 -2.0944" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Belt.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>  
@@ -865,7 +758,7 @@
         <visual name="TriOrb300P100_PlateA1_Axis1_GPA25GT5150-A-N15_visual">
             <origin xyz="-0.094 -0.153 0.084" rpy="0.0 0.0 1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -874,7 +767,7 @@
         <collision name="TriOrb300P100_PlateA1_Axis1_GPA25GT5150-A-N15_collision">
             <origin xyz="-0.094 -0.153 0.084" rpy="0.0 0.0 1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -887,7 +780,7 @@
         <visual name="TriOrb300P100_PlateA1_Axis2_GPA25GT5150-A-N15_visual">
             <origin xyz="0.094 -0.153 0.084" rpy="0.0 0.0 1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -896,7 +789,7 @@
         <collision name="TriOrb300P100_PlateA1_Axis2_GPA25GT5150-A-N15_collision">
             <origin xyz="0.094 -0.153 0.084" rpy="0.0 0.0 1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -909,7 +802,7 @@
         <visual name="TriOrb300P100_PlateA2_Axis1_GPA25GT5150-A-N15_visual">
             <origin xyz="-0.087 0.159 0.081" rpy="0.0 0.0 -0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -918,7 +811,7 @@
         <collision name="TriOrb300P100_PlateA2_Axis1_GPA25GT5150-A-N15_collision">
             <origin xyz="-0.087 0.159 0.081" rpy="0.0 0.0 -0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -931,7 +824,7 @@
         <visual name="TriOrb300P100_PlateA2_Axis2_GPA25GT5150-A-N15_visual">
             <origin xyz="-0.181 -0.004 0.081" rpy="0.0 0.0 -0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -940,7 +833,7 @@
         <collision name="TriOrb300P100_PlateA2_Axis2_GPA25GT5150-A-N15_collision">
             <origin xyz="-0.181 -0.004 0.081" rpy="0.0 0.0 -0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -953,7 +846,7 @@
         <visual name="TriOrb300P100_PlateA3_Axis1_GPA25GT5150-A-N15_visual">
             <origin xyz="0.087 0.159 0.081" rpy="0.0 0.0 -2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -962,7 +855,7 @@
         <collision name="TriOrb300P100_PlateA3_Axis1_GPA25GT5150-A-N15_collision">
             <origin xyz="0.087 0.159 0.081" rpy="0.0 0.0 -2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -975,7 +868,7 @@
         <visual name="TriOrb300P100_PlateA3_Axis2_GPA25GT5150-A-N15_visual">
             <origin xyz="0.181 -0.004 0.081" rpy="0.0 0.0 -2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -984,7 +877,7 @@
         <collision name="TriOrb300P100_PlateA3_Axis2_GPA25GT5150-A-N15_collision">
             <origin xyz="0.181 -0.004 0.081" rpy="0.0 0.0 -2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Axis_GPA25GT5150-A-N15.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>  
@@ -1034,7 +927,7 @@
         <visual name="TriOrb300P100_PlateA1_Idlar1_AFBD15-30_visual">
             <origin xyz="-0.055 -0.143 0.063" rpy="0.0 0.0 1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -1043,7 +936,7 @@
         <collision name="TriOrb300P100_PlateA1_Idlar1_AFBD15-30_collision">
             <origin xyz="-0.055 -0.143 0.063" rpy="0.0 0.0 1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -1056,7 +949,7 @@
         <visual name="TriOrb300P100_PlateA1_Idlar2_AFBD15-30_visual">
             <origin xyz="0.043 -0.143 0.075" rpy="0.0 0.0 1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -1065,7 +958,7 @@
         <collision name="TriOrb300P100_PlateA1_Idlar2_AFBD15-30_collision">
             <origin xyz="0.043 -0.143 0.075" rpy="0.0 0.0 1.5708" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -1078,7 +971,7 @@
         <visual name="TriOrb300P100_PlateA2_Idlar1_AFBD15-30_visual">
             <origin xyz="0.153 0.025 0.06" rpy="0.0 0.0 0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -1087,7 +980,7 @@
         <collision name="TriOrb300P100_PlateA2_Idlar1_AFBD15-30_collision">
             <origin xyz="0.153 0.025 0.06" rpy="0.0 0.0 0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -1100,7 +993,7 @@
         <visual name="TriOrb300P100_PlateA2_Idlar2_AFBD15-30_visual">
             <origin xyz="0.104 0.11 0.072" rpy="0.0 0.0 0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -1109,7 +1002,7 @@
         <collision name="TriOrb300P100_PlateA2_Idlar2_AFBD15-30_collision">
             <origin xyz="0.104 0.11 0.072" rpy="0.0 0.0 0.523599" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -1122,7 +1015,7 @@
         <visual name="TriOrb300P100_PlateA3_Idlar1_AFBD15-30_visual">
             <origin xyz="-0.147 0.035 0.072" rpy="0.0 0.0 2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -1131,7 +1024,7 @@
         <collision name="TriOrb300P100_PlateA3_Idlar1_AFBD15-30_collision">
             <origin xyz="-0.147 0.035 0.072" rpy="0.0 0.0 2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -1144,7 +1037,7 @@
         <visual name="TriOrb300P100_PlateA3_Idlar2_AFBD15-30_visual">
             <origin xyz="-0.098 0.12 0.06" rpy="0.0 0.0 2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white_aluminum">
                 <color rgba="0.6 0.6490196078431373 0.6333333333333333 1.0"/>
@@ -1153,7 +1046,7 @@
         <collision name="TriOrb300P100_PlateA3_Idlar2_AFBD15-30_collision">
             <origin xyz="-0.098 0.12 0.06" rpy="0.0 0.0 2.61799" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_PlateA_Idlar_AFBD15-30.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>  
@@ -1203,7 +1096,7 @@
         <visual name="TriOrb300P100_UnderPlate_visual">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_UnderPlate.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_UnderPlate.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="sus">
                 <color rgba="0.753 0.753 0.753 1.0"/>
@@ -1212,7 +1105,7 @@
         <collision name="TriOrb300P100_UnderPlate_collision">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="~/tribot/src/warehouse_robot_sim/meshes/TriOrb300P100_UnderPlate.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="file://$(find warehouse_robot_sim)/meshes/TriOrb300P100_UnderPlate.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
   </link>
@@ -1222,5 +1115,19 @@
     <child link="TriOrb300P100_UnderPlate"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
+
+
+  <!--Add camera-->
+
+  <xacro:depth_sensor>
+    <origin xyz="0.0 -0.16 0.16" rpy="0.0 0.0 -1.57"/>
+  </xacro:depth_sensor>
+
+ 
+
+      <!-- Add 3-Wheel Omni-Drive Plugin -->
+<xacro:omni_drive_controller />
+
+
 
 </robot>
