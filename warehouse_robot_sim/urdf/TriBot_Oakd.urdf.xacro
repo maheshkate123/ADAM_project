@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <robot name="TriOrb300P100">
-  <!-- <xacro:include filename="$(find warehouse_robot_sim)/urdf/oakd.xacro" /> -->
+  <!-- <xacro:include filename="$(find warehouse_robot_sim)/urdf/oakd.urdf.xacro" /> -->
 
   <link name="base_link">
     <inertial>

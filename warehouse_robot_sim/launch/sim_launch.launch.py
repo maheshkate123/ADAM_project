@@ -37,7 +37,7 @@ def generate_launch_description():
  
     spawn_x_val = '0.0'
     spawn_y_val = '0.0'
-    spawn_z_val = '0.01'
+    spawn_z_val = '0.025'
     spawn_yaw_val = '0.0'
     
 
