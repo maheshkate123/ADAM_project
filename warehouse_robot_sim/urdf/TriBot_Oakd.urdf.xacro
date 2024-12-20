@@ -1,7 +1,13 @@
 <?xml version="1.0" ?>
-<robot name="TriOrb300P100">
-  <!-- <xacro:include filename="$(find warehouse_robot_sim)/urdf/oakd.urdf.xacro" /> -->
+<robot name="TriOrb300P100" xmlns:xacro="http://ros.org/wiki/xacro">
 
+  <xacro:include filename="$(find warehouse_robot_sim)/urdf/oakd.urdf.xacro"/>
+  <xacro:include filename="$(find warehouse_robot_sim)/urdf/omni_controller.urdf.xacro" />
+
+<link name="base_footprint">
+
+ 
+</link>
   <link name="base_link">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -25,6 +31,11 @@
     </collision>
   </link>
   
+<joint name="base_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.15" rpy="0.0 0.0 1.57"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+ </joint>
 
   
   <link name="TriOrb300P100_TopPlate">
@@ -1108,29 +1119,14 @@
 
   <!--Add camera-->
 
-  <!-- <xacro:oakd_link mount_point="camera" > -->
-    
-  <!-- </xacro:oakd_link> -->
+  <xacro:depth_sensor>
+    <origin xyz="0.0 -0.16 0.16" rpy="0.0 0.0 -1.57"/>
+  </xacro:depth_sensor>
 
-  <!-- <xacro:oakd_joint x="0.0" y="0.0" z="0.5" roll="0.0" pitch="0.0" yaw="0.0" mount_point="camera"> -->
-
-  <!-- </xacro:oakd_joint> -->
-
-  
+ 
 
       <!-- Add 3-Wheel Omni-Drive Plugin -->
-    <gazebo>
-        <plugin name="omni_drive_plugin" filename="libgazebo_omni_drive_plugin.so">
-            <robot_base_frame>base_link</robot_base_frame>
-            <wheel_radius>0.05</wheel_radius>
-            <wheel_separation>0.3</wheel_separation>
-            <wheel_joints>
-                <joint>TriOrb300P100_Ball100_1_joint</joint>
-                <joint>TriOrb300P100_Ball100_2_joint</joint>
-                <joint>TriOrb300P100_Ball100_3_joint</joint>
-            </wheel_joints>
-        </plugin>
-    </gazebo>
+<xacro:omni_drive_controller />
 
 
 
