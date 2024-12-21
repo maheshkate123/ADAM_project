@@ -32,7 +32,7 @@ def generate_launch_description():
 
       
     world = os.path.join(get_package_share_directory(
-        'warehouse_robot_sim'), 'worlds', 'warehouse.world')
+        'warehouse_robot_sim'), 'worlds', 'small_warehouse.sdf')
     
  
     spawn_x_val = '0.0'
