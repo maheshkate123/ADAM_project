@@ -16,7 +16,6 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 
-
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, IncludeLaunchDescription, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
@@ -30,23 +29,18 @@ import xacro
 
 def generate_launch_description():
 
-      
     world = os.path.join(get_package_share_directory(
-        'warehouse_robot_sim'), 'worlds', 'small_warehouse.sdf')
-    
+        'warehouse_robot_sim'), 'worlds', 'small_warehouse.sdf')    
  
     spawn_x_val = '0.0'
     spawn_y_val = '0.0'
     spawn_z_val = '0.025'
     spawn_yaw_val = '0.0'
     
-
-
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),launch_arguments={'world':world}.items()
              )
-
     robot_path = os.path.join(
         get_package_share_directory('warehouse_robot_sim'))
 
