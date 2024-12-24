@@ -1,8 +1,4 @@
 import os
-
-from ament_index_python.packages import get_package_share_directory
-
-
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, IncludeLaunchDescription, SetEnvironmentVariable
 from launch_ros.actions import Node
@@ -12,30 +8,28 @@ import xacro
 
 
 def generate_launch_description():
+    # Absolute path to your package
+    robot_path = os.path.expanduser('~/tribot/src/warehouse_robot_sim')
 
-      
-    world = os.path.join(get_package_share_directory(
-        'warehouse_robot_sim'), 'worlds', 'warehouse.world')
+    # Path to the world file
+    world = os.path.join(robot_path, 'worlds', 'small_warehouse.sdf')
     
- 
+    # Robot spawn parameters
     spawn_x_val = '0.0'
     spawn_y_val = '0.0'
     spawn_z_val = '0.025'
     spawn_yaw_val = '0.0'
-    
 
-
+    # Include Gazebo launch file
     gazebo = IncludeLaunchDescription(
-                PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),launch_arguments={'world':world}.items()
-             )
+        PythonLaunchDescriptionSource([
+            os.path.join('/opt/ros/humble/share/gazebo_ros/launch', 'gazebo.launch.py')
+        ]),
+        launch_arguments={'world': world}.items()
+    )
 
-    robot_path = os.path.join(
-        get_package_share_directory('warehouse_robot_sim'))
-
-    xacro_file = os.path.join(robot_path,
-                              'urdf',
-                              'TriBot_Oakd.urdf.xacro')
+    # Path to robot description
+    xacro_file = os.path.join(robot_path, 'urdf', 'TriBot_Oakd.urdf.xacro')
 
     # Parse the xacro file
     doc = xacro.parse(open(xacro_file))
