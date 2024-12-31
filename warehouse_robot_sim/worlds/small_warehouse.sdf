@@ -2,7 +2,8 @@
 <sdf version="1.6">
   <world name="default">
 
-    
+    <plugin name="gazebo_ros_factory" filename="libgazebo_ros_factory.so"/>
+
     <model name="aws_robomaker_warehouse_RoofB_01_001">
         <include>
             <uri>model://aws_robomaker_warehouse_RoofB_01</uri>
