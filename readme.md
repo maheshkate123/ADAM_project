@@ -20,6 +20,6 @@ Install - sudo apt install ros-humble-teleop-twist-keyboard
 Run - ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ### Obstacle Detection using Depth Measurements:
-Run - ros2 run warehouse_robot_sim obstacle_detection.py (Ensure that package.xml has cv_bridge dependency)
+Run - ros2 run obstacle_detection obstacle_detection.py (Ensure that package.xml has cv_bridge dependency)
 
 Troubleshoot:- ros2 topic list. Check if '/camera/depth/image_rect_raw' topic is listed
