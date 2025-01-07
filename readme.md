@@ -17,3 +17,7 @@ ros2 launch warehouse_robot_sim sim_launch.launch.py
 ### Utilities - 
 Install - sudo apt install ros-humble-teleop-twist-keyboard
 Run - ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+### Obstacle Detection using Depth Measurements:
+
+Run - ros2 run warehouse_robot_sim obstacle_detection.py (Ensure that package.xml has cv_bridge dependency)
