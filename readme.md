@@ -7,6 +7,19 @@ This repository contains development work for TriOrb robot Vison based navigatio
 Auto Build (useful in package testing)-
 colcon build --symlink-install
 
+### Running the robot in gazebo environment:
+cd <your_ws>
+
+source install/setup.bash
+
+ros2 launch warehouse_robot_sim sim_launch.launch.py
+
 ### Utilities - 
 Install - sudo apt install ros-humble-teleop-twist-keyboard
+
 Run - ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+### Obstacle Detection using Depth Measurements:
+Run - ros2 run warehouse_robot_sim obstacle_detection.py (Ensure that package.xml has cv_bridge dependency)
+
+Troubleshoot:- ros2 topic list. Check if '/camera/depth/image_rect_raw' topic is listed
