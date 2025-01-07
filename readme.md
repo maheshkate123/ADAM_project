@@ -7,6 +7,11 @@ This repository contains development work for TriOrb robot Vison based navigatio
 Auto Build (useful in package testing)-
 colcon build --symlink-install
 
+### Running the robot in gazebo environment:
+cd <your_ws>
+source install/setup.bash
+ros2 launch warehouse_robot_sim sim_launch.launch.py
+
 ### Utilities - 
 Install - sudo apt install ros-humble-teleop-twist-keyboard
 Run - ros2 run teleop_twist_keyboard teleop_twist_keyboard
