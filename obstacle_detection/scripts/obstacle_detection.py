@@ -64,7 +64,7 @@ class ObstacleDetectionNode(Node):
     def move_forward(self):
         if not self.object_detected and not self.in_cooldown:
             forward_msg = Twist()
-            forward_msg.linear.x = 1.0  # Set a forward speed
+            forward_msg.linear.x = 1.0  
             self.cmd_vel_pub.publish(forward_msg)
 
     def stop_robot(self):
@@ -78,7 +78,6 @@ class ObstacleDetectionNode(Node):
         self.cooldown_timer = self.create_timer(2.0, self.end_cooldown)  # 2 seconds cooldown
 
     def end_cooldown(self):
-        """Ends the cooldown period."""
         self.in_cooldown = False
         if self.cooldown_timer:
             self.cooldown_timer.cancel()  # Stop the cooldown timer
