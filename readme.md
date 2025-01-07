@@ -9,7 +9,9 @@ colcon build --symlink-install
 
 ### Running the robot in gazebo environment:
 cd <your_ws>
+
 source install/setup.bash
+
 ros2 launch warehouse_robot_sim sim_launch.launch.py
 
 ### Utilities - 
