@@ -24,6 +24,7 @@ endif()
 install(
   PROGRAMS
     scripts/move_square.py
+    scripts/move_square_close_loop.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
