@@ -3,7 +3,6 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from geometry_msgs.msg import Twist
 import numpy as np
 from cv_bridge import CvBridge
 
@@ -16,15 +15,7 @@ class ObstacleDetectionNode(Node):
         self.depth_sub = self.create_subscription(
             Image, '/camera/depth/image_rect_raw', self.depth_callback, 10
         )
-        self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
         self.object_detected = False
-        self.in_cooldown = False
-
-        # Timer to continuously send velocity commands
-        self.timer = self.create_timer(0.1, self.move_forward)
-
-        # Cooldown timer
-        self.cooldown_timer = None
 
     def depth_callback(self, msg):
         try:
@@ -42,46 +33,21 @@ class ObstacleDetectionNode(Node):
             roi = depth_array[top:bottom, left:right]
             min_distance = np.nanmin(roi)
 
+            # Log the distance continuously
+            self.get_logger().info(f"Current distance to the nearest object: {min_distance:.2f}m")
+
             # Check if an object is within the safe distance
             if min_distance < self.safe_distance:
                 if not self.object_detected:
-                    self.get_logger().info(f"Object detected at {min_distance:.2f}m. Stopping robot.")
+                    self.get_logger().info(f"Object detected at {min_distance:.2f}m.")
                 self.object_detected = True
-                self.stop_robot()
-
-                # Start cooldown timer if not already in cooldown
-                if not self.in_cooldown:
-                    self.start_cooldown()
-
             else:
-                if self.object_detected and not self.in_cooldown:
-                    self.get_logger().info("Path is clear. Resuming forward motion.")
+                if self.object_detected:
+                    self.get_logger().info("Path is clear.")
                 self.object_detected = False
 
         except Exception as e:
             self.get_logger().error(f"Error processing depth image: {e}")
-
-    def move_forward(self):
-        if not self.object_detected and not self.in_cooldown:
-            forward_msg = Twist()
-            forward_msg.linear.x = 1.0  
-            self.cmd_vel_pub.publish(forward_msg)
-
-    def stop_robot(self):
-        """Stops the robot."""
-        stop_msg = Twist()
-        self.cmd_vel_pub.publish(stop_msg)
-
-    def start_cooldown(self):
-        """Starts a cooldown period to prevent immediate forward motion."""
-        self.in_cooldown = True
-        self.cooldown_timer = self.create_timer(2.0, self.end_cooldown)  # 2 seconds cooldown
-
-    def end_cooldown(self):
-        self.in_cooldown = False
-        if self.cooldown_timer:
-            self.cooldown_timer.cancel()  # Stop the cooldown timer
-            self.cooldown_timer = None
 
 
 def main(args=None):
