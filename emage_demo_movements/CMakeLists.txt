@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(image_obstacle_detection)
+project(emage_demo_movements)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -8,9 +8,6 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclpy REQUIRED)
-find_package(urdf REQUIRED)
-find_package(xacro REQUIRED)
-find_package(gazebo_ros REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -26,7 +23,7 @@ endif()
 
 install(
   PROGRAMS
-    scripts/obstacle_detection.py
+    scripts/move_square.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

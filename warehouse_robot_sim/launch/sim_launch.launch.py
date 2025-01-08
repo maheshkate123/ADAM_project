@@ -9,7 +9,7 @@ import xacro
 
 def generate_launch_description():
     # Absolute path to your package
-    robot_path = os.path.expanduser('~/tribot/src/warehouse_robot_sim')
+    robot_path = os.path.expanduser('~/adam_ws/src/warehouse_robot_sim')
 
     # Path to the world file
     world = os.path.join(robot_path, 'worlds', 'small_warehouse.sdf')
