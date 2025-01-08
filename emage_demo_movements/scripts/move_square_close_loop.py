@@ -6,6 +6,8 @@ from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 import math
 from tf_transformations import euler_from_quaternion
+from rclpy.duration import Duration
+
 
 
 class DrawSquare(Node):
@@ -16,8 +18,8 @@ class DrawSquare(Node):
 
         # Parameters for motion
         self.side_length = 2.0  # Length of each side of the square in meters
-        self.linear_speed = 0.2  # Linear speed in m/s
-        self.angular_speed = 0.5  # Angular speed in rad/s
+        self.linear_speed = 0.5  # Linear speed in m/s
+        self.angular_speed = 1.0  # Angular speed in rad/s
 
         # Odometry feedback
         self.current_x = 0.0
@@ -52,7 +54,9 @@ class DrawSquare(Node):
 
         while distance_traveled < target_distance:
             self.publisher_.publish(msg)
-            self.get_clock().sleep_for(0.1)  # Short delay
+            # self.get_clock().sleep_for(0.1)  # Short delay
+            rclpy.spin_once(self, timeout_sec=0.1)  # Process odometry callback
+
             distance_traveled = math.sqrt(
                 (self.current_x - self.initial_x) ** 2 + (self.current_y - self.initial_y) ** 2
             )
@@ -75,7 +79,9 @@ class DrawSquare(Node):
 
         while abs(self.current_yaw - target_angle) > 0.01:
             self.publisher_.publish(msg)
-            self.get_clock().sleep_for(0.1)  # Short delay
+            # self.get_clock().sleep_for(0.1)  # Short delay
+            rclpy.spin_once(self, timeout_sec=0.1)  # Process odometry callback
+
 
         # Stop the robot
         msg.angular.z = 0.0
