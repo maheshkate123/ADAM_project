@@ -40,8 +40,8 @@
       </visual> 
     </gazebo>rgb(213,28,40)
 
-    <joint name="camera_to_base_link" type="fixed">
-      <parent link="base_link"/>
+    <joint name="camera_to_base" type="fixed">
+      <parent link="robot_base"/>
       <child link="camera_link"/>
       <xacro:insert_block name="origin" />
     </joint>

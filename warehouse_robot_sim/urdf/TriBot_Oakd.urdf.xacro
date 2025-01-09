@@ -4,11 +4,11 @@
   <xacro:include filename="$(find warehouse_robot_sim)/urdf/oakd.urdf.xacro"/>
   <xacro:include filename="$(find warehouse_robot_sim)/urdf/omni_controller.urdf.xacro" />
 
-<link name="base_footprint">
+<link name="base_link">
 
  
 </link>
-  <link name="base_link">
+  <link name="robot_base">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="1.0"/>
@@ -32,9 +32,9 @@
   </link>
   
 <joint name="base_joint" type="fixed">
-    <origin xyz="0.0 0.0 0.15" rpy="0.0 0.0 1.57"/>
-    <parent link="base_footprint"/>
-    <child link="base_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 1.57"/>
+    <parent link="base_link"/>
+    <child link="robot_base"/>
  </joint>
 
   
@@ -62,7 +62,7 @@
   </link>
   
   <joint name="TriOrb300P100_TopPlate_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_TopPlate"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -91,7 +91,7 @@
   </link>
   
   <joint name="TriOrb300P100_Ball100_1_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Ball100_1"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -143,13 +143,13 @@
   </link>
   
   <joint name="TriOrb300P100_Ball100_2_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Ball100_2"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_Ball100_3_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Ball100_3"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -177,7 +177,7 @@
   </link>
   
   <joint name="TriOrb300P100_PlateA_PlateA-1_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA_PlateA-1"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -227,13 +227,13 @@
   </link>
   
   <joint name="TriOrb300P100_PlateA_PlateA-2_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA_PlateA-2"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA_PlateA-3_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA_PlateA-3"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -306,19 +306,19 @@
   </link>  
 
   <joint name="TriOrb300P100_Casters_BlockC_BlockC1_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Casters_BlockC_BlockC1"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_Casters_BlockC_BlockC2_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Casters_BlockC_BlockC2"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_Casters_BlockC_BlockC3_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Casters_BlockC_BlockC3"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -457,37 +457,37 @@
   </link>
   
   <joint name="TriOrb300P100_Casters_BlockC_Pall1a_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Casters_BlockC_Pall1a"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_Casters_BlockC_Pall1b_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Casters_BlockC_Pall1b"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_Casters_BlockC_Pall2a_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Casters_BlockC_Pall2a"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_Casters_BlockC_Pall2b_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Casters_BlockC_Pall2b"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_Casters_BlockC_Pall3a_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Casters_BlockC_Pall3a"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_Casters_BlockC_Pall3b_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_Casters_BlockC_Pall3b"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -626,40 +626,40 @@
   </link>  
   
   <joint name="TriOrb300P100_PlateA1_BLMR5100K-10-B_GPA28GT5150-A-N18_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA1_BLMR5100K-10-B_GPA28GT5150-A-N18"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA1_BLMR5100K-10-B_Motor_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA1_BLMR5100K-10-B_Motor"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA2_BLMR5100K-10-B_GPA28GT5150-A-N18_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA2_BLMR5100K-10-B_GPA28GT5150-A-N18"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   
   <joint name="TriOrb300P100_PlateA2_BLMR5100K-10-B_Motor_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA2_BLMR5100K-10-B_Motor"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   
   <joint name="TriOrb300P100_PlateA3_BLMR5100K-10-B_GPA28GT5150-A-N18_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA3_BLMR5100K-10-B_GPA28GT5150-A-N18"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   
   <joint name="TriOrb300P100_PlateA3_BLMR5100K-10-B_Motor_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA3_BLMR5100K-10-B_Motor"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -732,19 +732,19 @@
   </link>  
   
   <joint name="TriOrb300P100_PlateA1_Belt_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA1_Belt"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA2_Belt_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA2_Belt"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA3_Belt_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA3_Belt"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -883,37 +883,37 @@
   </link>  
   
   <joint name="TriOrb300P100_PlateA1_Axis1_GPA25GT5150-A-N15_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA1_Axis1_GPA25GT5150-A-N15"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA1_Axis2_GPA25GT5150-A-N15_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA1_Axis2_GPA25GT5150-A-N15"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA2_Axis1_GPA25GT5150-A-N15_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA2_Axis1_GPA25GT5150-A-N15"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA2_Axis2_GPA25GT5150-A-N15_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA2_Axis2_GPA25GT5150-A-N15"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA3_Axis1_GPA25GT5150-A-N15_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA3_Axis1_GPA25GT5150-A-N15"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA3_Axis2_GPA25GT5150-A-N15_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA3_Axis2_GPA25GT5150-A-N15"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -1052,37 +1052,37 @@
   </link>  
   
   <joint name="TriOrb300P100_PlateA1_Idlar1_AFBD15-30_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA1_Idlar1_AFBD15-30"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA1_Idlar2_AFBD15-30_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA1_Idlar2_AFBD15-30"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA2_Idlar1_AFBD15-30_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA2_Idlar1_AFBD15-30"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA2_Idlar2_AFBD15-30_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA2_Idlar2_AFBD15-30"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA3_Idlar1_AFBD15-30_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA3_Idlar1_AFBD15-30"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
   
   <joint name="TriOrb300P100_PlateA3_Idlar2_AFBD15-30_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_PlateA3_Idlar2_AFBD15-30"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
@@ -1111,7 +1111,7 @@
   </link>
 
   <joint name="TriOrb300P100_UnderPlate_joint" type="fixed">
-    <parent link="base_link"/>
+    <parent link="robot_base"/>
     <child link="TriOrb300P100_UnderPlate"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
