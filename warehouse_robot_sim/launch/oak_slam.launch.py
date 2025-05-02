@@ -23,6 +23,10 @@ def generate_launch_description():
           'topic_queue_size':20,
           'sync_queue_size':10,
           'wait_imu_to_init':False,
+
+
+
+          #Grid_mapping parameters
           'Grid/FromDepth':True,
           'Grid/EmptyRayTracing:':True ,
           'Grid/MaxObstacleHeight':'1.0',
@@ -33,6 +37,8 @@ def generate_launch_description():
           'Grid/RangeMax':'10.0',
           'Grid/RayTracing':'true',
           'Grid/Invert':'false',
+
+          #RGBD-SLAM parameters 
           'RGBD/ProximityMaxGraphDepth': '0',
           'RGBD/ProximityPathMaxNeighbors': '1',
           'RGBD/ProximityBySpace': 'false',
@@ -41,7 +47,8 @@ def generate_launch_description():
           'RGBD/CreateOccupancyGrid':'true',
           'use_sim_time':True,
           'wait_for_transform':0.2,
-        #   'database_path': '/home/emage/adam_ws/src/rtabmap.db',
+
+          'database_path': '/home/emage/adam_ws/rtabmap.db',
         #   'localization': True,
           }]
         # If the localization parameter is true, RTAB-Map will attempt to localize the robot using the existing map (it will not create a new one).

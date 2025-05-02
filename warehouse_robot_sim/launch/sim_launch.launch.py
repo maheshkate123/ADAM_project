@@ -12,7 +12,7 @@ def generate_launch_description():
     robot_path = os.path.expanduser('~/adam_ws/src/warehouse_robot_sim')
 
     # Path to the world file
-    world = os.path.join(robot_path, 'worlds', 'adam_expo_world.world')
+    world = os.path.join(robot_path, 'worlds', 'warehouse.world')
     
     # Robot spawn parameters
     spawn_x_val = '0.0'

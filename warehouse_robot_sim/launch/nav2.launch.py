@@ -57,6 +57,15 @@ def generate_launch_description():
         'params_file',
         default_value=os.path.join(bringup_dir, 'params', 'nav2_params.yaml'),
         description='Full path to the ROS2 parameters file to use for all launched nodes')
+    
+    declare_map_yaml_cmd = DeclareLaunchArgument(
+        'map',
+        default_value='/home/emage/adam_ws/my_map.yaml',
+        description='Full path to map yaml file to load')
+    
+
+    # map_yaml_file = LaunchConfiguration('map')
+
 
     declare_autostart_cmd = DeclareLaunchArgument(
         'autostart', default_value='true',
@@ -123,7 +132,19 @@ def generate_launch_description():
                 parameters=[{'use_sim_time': use_sim_time},
                             {'autostart': autostart},
                             {'node_names': lifecycle_nodes}]),
-        ]
+
+
+            Node(
+                package='nav2_map_server',
+                executable='map_server',
+                name='map_server',
+                output='screen',
+                respawn=use_respawn,
+                respawn_delay=2.0,
+                # parameters=[params_file, {'yaml_filename': map_yaml_file}],
+                arguments=['--ros-args', '--log-level', log_level],),
+
+                ]
     )
 
     
@@ -143,6 +164,8 @@ def generate_launch_description():
     ld.add_action(declare_log_level_cmd)
     # Add the actions to launch all of the navigation nodes
     ld.add_action(load_nodes)
+    ld.add_action(declare_map_yaml_cmd)
+
  
 
     return ld
